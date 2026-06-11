@@ -52,21 +52,17 @@ def main():
     # this keeps theta within +/- pi for nicer plotting
     theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
 
-    # plot theta (pendulum angle vs time)
-    fig, ax = plt.subplots()
-    ax.plot(t, theta)
-    ax.set_xlabel('t')
-    ax.set_ylabel('Theta')
-    ax.set_title(f'Pendulum angle vs time')
-    plt.show()
-    plt.close()
+    # plot theta (pendulum angle vs time) and phase space
+    fig, axs = plt.subplots(2)
+    axs[0].plot(t, theta)
+    axs[0].set_xlabel('t')
+    axs[0].set_ylabel('Theta')
+    axs[0].set_title(f'Pendulum angle vs time')
 
-    # plot phase space
-    fig, ax = plt.subplots()
-    ax.plot(theta_wrapped, d_theta)
-    ax.set_xlabel('Theta')
-    ax.set_ylabel('Pendulum angular velocity')
-    ax.set_title(f'Phase space plot')
+    axs[1].plot(theta_wrapped, d_theta)
+    axs[1].set_xlabel('Theta')
+    axs[1].set_ylabel('Pendulum angular velocity')
+    axs[1].set_title(f'Phase space plot')
     plt.show()
     plt.close()
 
