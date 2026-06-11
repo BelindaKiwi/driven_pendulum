@@ -72,7 +72,7 @@ def main():
         axs[0,i].set_title(f'A={A} and omega={omega_drive}')
         # and phase space
         axs[1,i].plot(rad2deg(theta_wrapped), rad2deg(d_theta))
-        axs[1,i].plot(theta0, d_theta0, 'o', c='black', ms=10, label='Start')
+        axs[1,i].plot(theta0, d_theta0, 'o', c='black', ms=6, label='Start')
         axs[1,i].set_xlabel('Theta [deg]')
         axs[1,i].set_xlim(-180, 180)
         axs[1,i].set_ylabel('Pendulum angular velocity [rad/s]')
