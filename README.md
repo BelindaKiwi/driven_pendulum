@@ -1,4 +1,4 @@
-## Programming task given by Holmes Solutions
+# Programming task given by Holmes Solutions
 
 A pendulum of length L and mass m hangs from a pivot that is driven horizontally, so the pivot position is x_p(t) = A·sin(ωt). With gravity g, linear damping coefficient b, and θ measured from the downward vertical, the equation of motion is:
 
@@ -14,4 +14,4 @@ Two additional requirements:
 
 - Please push it to a public Git repository on your GitHub account and share the link with us for review.
 
-# Code written by Belinda Mellish
+### Code written by Belinda Mellish
