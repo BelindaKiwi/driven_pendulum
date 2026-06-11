@@ -1,6 +1,6 @@
-# Programming task given by Holmes Solutions
+This code explores the behaviour of a driven pendulum as per the task description provided by Holmes Solutions:
 
-A pendulum of length L and mass m hangs from a pivot that is driven horizontally, so the pivot position is x_p(t) = A·sin(ωt). With gravity g, linear damping coefficient b, and θ measured from the downward vertical, the equation of motion is:
+*A pendulum of length L and mass m hangs from a pivot that is driven horizontally, so the pivot position is x_p(t) = A·sin(ωt). With gravity g, linear damping coefficient b, and θ measured from the downward vertical, the equation of motion is:
 
 θ̈ + b·θ̇ + (g/L)·sin θ = (A·ω²/L)·sin(ωt)·cos θ
 
@@ -12,6 +12,6 @@ Two additional requirements:
 
 - Use uv to manage dependencies.
 
-- Please push it to a public Git repository on your GitHub account and share the link with us for review.
+- Please push it to a public Git repository on your GitHub account and share the link with us for review.*
 
-### Code written by Belinda Mellish
+The code was developed by Belinda Mellish using WSL2 (Linux) on a Windows machine. 
