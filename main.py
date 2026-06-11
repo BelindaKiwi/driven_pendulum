@@ -40,17 +40,14 @@ def main():
     n = 10000
     t = np.linspace(t_0, t_end, n) # time values to evaluate over
     
-    # variables to play with
-    A = 0.05 # amplitude of drive
-    omega_drive = 2 # drive freq
-
     # set a range of values for A and omega_drive to explore behaviour and plot
-    A_values = [0.1, 0.2, 0.3, 0.4, 0.5]
-    omega_values = [2, 4, 6, 8, 10]
+    A_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.01]
+    omega_values = [2, 3, 4, 5, 6, 15]
 
+    fig, axs = plt.subplots(2,6, layout='constrained', figsize=(18,6), sharey='row')
 
-    for A, omega_drive in zip(A_values, omega_values):
-        # integrate to solve for theta with respect to time using scipy.integrate
+    for i, (A, omega_drive) in enumerate(zip(A_values, omega_values)):
+        # integrate to solve for theta with respect to time using scipy.integrate solve_ivp
         sol_obj = solve_ivp(fun=driven_pendulum,
                             t_span=(t_0, t_end),
                             y0=y,
@@ -64,32 +61,21 @@ def main():
         theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
 
         # plot theta (pendulum angle vs time) and phase space
-        fig, axs = plt.subplots(2, layout='constrained')
-        axs[0].plot(t, rad2deg(theta_wrapped))
-        axs[0].set_xlabel('Time [s]')
-        axs[0].set_ylabel('Theta [deg]')
-        axs[0].set_title(f'Pendulum angle with A={A} and omega={omega_drive}')
+        
+        axs[0,i].plot(t, rad2deg(theta_wrapped))
+        axs[0,i].set_xlabel('Time [s]')
+        axs[0,i].set_ylabel('Theta [deg]')
+        axs[0,i].set_title(f'A={A} and omega={omega_drive}')
         # and phase space
-        axs[1].plot(rad2deg(theta_wrapped), rad2deg(d_theta))
-        axs[1].plot(theta0, d_theta0, 'o', c='black', ms=10, label='Start')
-        axs[1].set_xlabel('Theta [deg]')
-        axs[1].set_ylabel('Pendulum angular velocity [rad/s]')
-        axs[1].set_title(f'Phase space plot')
-        axs[1].legend()
-        plt.show()
-        plt.close()
-
-
-
-
-
-
-
-
-
-
-   
-
+        axs[1,i].plot(rad2deg(theta_wrapped), rad2deg(d_theta))
+        axs[1,i].plot(theta0, d_theta0, 'o', c='black', ms=10, label='Start')
+        axs[1,i].set_xlabel('Theta [deg]')
+        axs[1,i].set_xlim(-180, 180)
+        axs[1,i].set_ylabel('Pendulum angular velocity [rad/s]')
+        axs[1,i].set_title(f'Phase space plot')
+    axs[1,0].legend()
+    plt.show()
+    plt.close()
 
 
 if __name__ == "__main__":
