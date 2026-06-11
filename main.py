@@ -2,16 +2,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
-def driven_pendulum(t, y, A, b, g, L):
+def driven_pendulum(t, y, omega_drive, A, b, g, L):
     '''
     returns first and second derviates of theta using eqn of motion provided
     
     '''
-    omega, theta_start = y
-    d_theta = omega # time dertivate of theta is omega
+    theta, d_theta = y
     
     # rearragnement of motion equation given to calculate second derivate of theta
-    dd_theta = -b*d_theta - (g/L)*np.sin(theta_start) + (A*omega**2/L)*np.sin(omega*t)*np.cos(theta_start)
+    dd_theta = -b*d_theta - (g/L)*np.sin(theta) + (A*omega_drive**2/L)*np.sin(omega_drive*t)*np.cos(theta)
 
     return d_theta, dd_theta
 
@@ -19,47 +18,60 @@ def driven_pendulum(t, y, A, b, g, L):
 
 def main():
 
-    # switches
-    function_test = True # just to check my function returns some dd_theta values
- 
     # constants provided
     L = 1.0
     g = 9.81
     m = 1.0
     b = 0.5
 
+    # variables to play with
+    A = 0.05 # amplitude of drive
+    omega_drive = 2 # rate of drive
+
     # start values
-    A = 0.0 # amplitude of drive
-    omega = 0.2 # rate of drive
-    theta_start = 0.2 # start angle of pendulum
-    y = [omega, theta_start]
+    theta0 = 0# start angle of pendulum radians
+    d_theta0 = 0 # this is angular velocity of pendulum
+    y = [theta0, d_theta0]
+
+    # time space
     t_0 = 0
-    t_end = 200
-    n =100
+    t_end = 60
+    n = 2000
     t = np.linspace(t_0, t_end, n) # time values to evaluate over
     
-    #---------------------------------------------------
-    if function_test: 
-
-        d_theta, dd_theta = driven_pendulum(t, y, A, b, g, L)
-
-        # check that I get some values back
-        print('dd_theta values:')
-        print(dd_theta[0:10])
-    #---------------------------------------------------
-
-
     # integrate to solve for theta with respect to time using scipy.integrate
     sol_obj = solve_ivp(fun=driven_pendulum,
                         t_span=(t_0, t_end),
-                        y0=[omega, theta_start],
+                        y0=y,
                         t_eval=t,
-                        args=(A, b, g, L)
+                        args=(omega_drive, A, b, g, L)
                         )
-    
-    print(sol_obj.t)
-    print(sol_obj.y[0])
-    print(sol_obj.y[1])
+    theta = sol_obj.y[0]
+    d_theta = sol_obj.y[1]
+
+    # this keeps theta within +/- pi for nicer plotting
+    theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
+
+    # plot theta (pendulum angle vs time)
+    fig, ax = plt.subplots()
+    ax.plot(t, theta)
+    ax.set_xlabel('t')
+    ax.set_ylabel('Theta')
+    ax.set_title(f'Pendulum angle vs time')
+    plt.show()
+    plt.close()
+
+    # plot phase space
+    fig, ax = plt.subplots()
+    ax.plot(theta_wrapped, d_theta)
+    ax.set_xlabel('Theta')
+    ax.set_ylabel('Pendulum angular velocity')
+    ax.set_title(f'Phase space plot')
+    plt.show()
+    plt.close()
+
+
+
 
 
 
