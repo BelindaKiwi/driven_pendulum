@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.integrate import solve_ivp
 
 def driven_pendulum(omega, A, b, g, L, theta_start, t):
     '''
@@ -14,28 +15,36 @@ def driven_pendulum(omega, A, b, g, L, theta_start, t):
 
 
 def main():
+
+    # switches
+    function_test = True # just to check my function returns some dd_theta values
+    use_sol_ivp = True
    
     # constants provided
     L = 1.0
     g = 9.81
     m = 1.0
     b = 0.5
+    
+    #---------------------------------------------------
+    if function_test: 
 
-    # start values
-    A = 0.2 # amplitude of drive
-    omega = 2 # rate of drive
-    theta_start = 0.2 # start angle of pendulum
-    t_0 = 0
-    t_end = 20
-    t = np.linspace(t_0, t_end, 20)
+        # start values
+        A = 0.2 # amplitude of drive
+        omega = 2 # rate of drive
+        theta_start = 0.2 # start angle of pendulum
+        t_0 = 0
+        t_end = 20
+        t = np.linspace(t_0, t_end, 20) # time values to evaluate over
 
-    d_theta, dd_theta = driven_pendulum(omega, A, b, g, L, theta_start, t)
+        d_theta, dd_theta = driven_pendulum(omega, A, b, g, L, theta_start, t)
 
-    print('d_theta values:')
-    print(d_theta)
+        print('dd_theta values:')
+        print(dd_theta)
+    #---------------------------------------------------
 
-    print('dd_theta values:')
-    print(dd_theta)
+    if use_sol_ivp:
+        print()
 
 
 
