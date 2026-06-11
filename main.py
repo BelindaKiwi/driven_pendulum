@@ -3,10 +3,17 @@ import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 
 def driven_pendulum(t, y, omega_drive, A, b, g, L):
-    '''
-    Returns first and second derviates of theta using eqn of motion provided
-    y is start values
-    
+    '''Calculates first and second derviates of theta using given eqn of motion
+    Args:        
+        t: time
+        y: list of start values for theta and d_theta
+        omega_drive: driving frequency
+        A: driving amplitude
+        b: damping coefficient
+        g: acceleration due to gravity
+        L: length of pendulum
+    Returns:     d_theta: first derivate of theta
+                 dd_theta: second derivate of theta
     '''
     theta, d_theta = y
     
@@ -16,8 +23,7 @@ def driven_pendulum(t, y, omega_drive, A, b, g, L):
     return d_theta, dd_theta
 
 def rad2deg(x):
-    '''
-    Converts radians to degrees
+    '''Converts radians to degrees
     '''
     return x*180/np.pi
 
@@ -44,10 +50,11 @@ def main():
     A_values = [0.1, 0.2, 0.3, 0.4, 0.5, 0.01]
     omega_values = [2, 3, 4, 5, 6, 15]
 
+    # create subplots for theta vs time and phase space for each combination of A and omega_drive
     fig, axs = plt.subplots(2,6, layout='constrained', figsize=(18,6), sharey='row')
 
     for i, (A, omega_drive) in enumerate(zip(A_values, omega_values)):
-        # integrate to solve for theta with respect to time using scipy.integrate solve_ivp
+        # integrate to solve for theta with respect to time
         sol_obj = solve_ivp(fun=driven_pendulum,
                             t_span=(t_0, t_end),
                             y0=y,
@@ -56,12 +63,9 @@ def main():
                             )
         theta = sol_obj.y[0]
         d_theta = sol_obj.y[1]
+        theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi # keep theta within +/- pi
 
-        # this keeps theta within +/- pi for nicer plotting
-        theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
-
-        # plot theta (pendulum angle vs time) and phase space
-        
+        # plot theta (pendulum angle vs time)
         axs[0,i].plot(t, rad2deg(theta_wrapped))
         axs[0,i].set_xlabel('Time [s]')
         axs[0,i].set_ylabel('Theta [deg]')
@@ -76,7 +80,6 @@ def main():
     axs[1,0].legend()
     plt.show()
     plt.close()
-
 
 if __name__ == "__main__":
     main()
