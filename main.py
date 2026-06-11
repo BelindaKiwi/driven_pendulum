@@ -17,7 +17,7 @@ def driven_pendulum(t, y, omega_drive, A, b, g, L):
     '''
     theta, d_theta = y
     
-    # rearragnement of motion equation given to calculate second derivate of theta
+    # motion equation provided (rearranged to calculate second derivate of theta)
     dd_theta = -b*d_theta - (g/L)*np.sin(theta) + (A*omega_drive**2/L)*np.sin(omega_drive*t)*np.cos(theta)
 
     return d_theta, dd_theta
