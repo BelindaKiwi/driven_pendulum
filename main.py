@@ -21,22 +21,22 @@ def main():
     # constants provided
     L = 1.0
     g = 9.81
-    m = 1.0
+    m = 1.0 # kg
     b = 0.5
 
     # variables to play with
-    A = 0.05 # amplitude of drive
-    omega_drive = 2 # rate of drive
+    A = 0.5 # amplitude of drive
+    omega_drive = 3 # drive freq
 
     # start values
-    theta0 = 0# start angle of pendulum radians
+    theta0 = 0 # start angle of pendulum radians
     d_theta0 = 0 # this is angular velocity of pendulum
     y = [theta0, d_theta0]
 
     # time space
     t_0 = 0
-    t_end = 60
-    n = 2000
+    t_end = 30
+    n = 10000
     t = np.linspace(t_0, t_end, n) # time values to evaluate over
     
     # integrate to solve for theta with respect to time using scipy.integrate
@@ -53,16 +53,20 @@ def main():
     theta_wrapped = (theta + np.pi) % (2 * np.pi) - np.pi
 
     # plot theta (pendulum angle vs time) and phase space
-    fig, axs = plt.subplots(2)
+    fig, axs = plt.subplots(2, layout='constrained')
     axs[0].plot(t, theta)
-    axs[0].set_xlabel('t')
-    axs[0].set_ylabel('Theta')
-    axs[0].set_title(f'Pendulum angle vs time')
+    axs[0].set_xlabel('Time [s]')
+    axs[0].set_ylabel('Theta [rad]')
+    axs[0].set_title(f'Pendulum angle')
+  
 
     axs[1].plot(theta_wrapped, d_theta)
-    axs[1].set_xlabel('Theta')
-    axs[1].set_ylabel('Pendulum angular velocity')
+    axs[1].plot(theta0, d_theta0, 'o', c='black', ms=10, label='Start')
+    axs[1].set_xlabel('Theta [rads]')
+    axs[1].set_ylabel('Pendulum angular velocity [rad/s]')
     axs[1].set_title(f'Phase space plot')
+    axs[1].legend()
+
     plt.show()
     plt.close()
 
